@@ -1,0 +1,14 @@
+             string qrCodePath = Path.Combine(Directory.GetCurrentDirectory(), "Image");
+            using (MemoryStream ms = new MemoryStream())
+            {
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(user.Email, QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(qrCodeData);
+
+                using (Bitmap bitmap = qrCode.GetGraphic(60))
+                {
+                    string fileName = $"{user.Email}_QRCode.png"; // Customize the file name as per your requirements
+                    string filePath = Path.Combine(qrCodePath, fileName);
+                    bitmap.Save(filePath, ImageFormat.Png);
+                }
+            }
