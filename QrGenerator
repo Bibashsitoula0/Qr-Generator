@@ -7,7 +7,7 @@
 
                 using (Bitmap bitmap = qrCode.GetGraphic(60))
                 {
-                    string fileName = $"{user.Email}_QRCode.png"; // Customize the file name as per your requirements
+                    string fileName = $"{user.Email}_QRCode.png"; //  file name is email + qr name
                     string filePath = Path.Combine(qrCodePath, fileName);
                     bitmap.Save(filePath, ImageFormat.Png);
                 }
