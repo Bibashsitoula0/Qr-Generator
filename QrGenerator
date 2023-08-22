@@ -1,14 +1,40 @@
-             string qrCodePath = Path.Combine(Directory.GetCurrentDirectory(), "Image");
-            using (MemoryStream ms = new MemoryStream())
-            {
-                QRCodeGenerator qrGenerator = new QRCodeGenerator();
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode(user.Email, QRCodeGenerator.ECCLevel.Q);
-                QRCode qrCode = new QRCode(qrCodeData);
+NugetPackage ->    <PackageReference Include="QRCoderNetCore" Version="1.0.0" />
 
-                using (Bitmap bitmap = qrCode.GetGraphic(60))
+
+        public string GenerateQr(string codeId, string emails)
+        {
+            try
+            {
+                dynamic fileName = null;
+                string qrCodePath = Path.Combine(Directory.GetCurrentDirectory(), "Image");
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    string fileName = $"{user.Email}_QRCode.png"; //  file name is email + qr name
-                    string filePath = Path.Combine(qrCodePath, fileName);
-                    bitmap.Save(filePath, ImageFormat.Png);
+                    var Code = codeId;
+                    var Userid = emails;
+
+                    var url = _configuration["ServerUrl:url"];
+                    var urlpath = $"{url}?code={Code}&userEmail={Userid}";
+
+                    QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                    QRCodeData qrCodeData = qrGenerator.CreateQrCode(urlpath, QRCodeGenerator.ECCLevel.Q);
+                    QRCode qrCode = new QRCode(qrCodeData);
+
+                    using (Bitmap bitmap = qrCode.GetGraphic(60))
+                    {
+                         fileName = $"{Code}_QRCode.png"; //  file name is email + qr name
+                        string filePath = Path.Combine(qrCodePath, fileName);
+                        bitmap.Save(filePath, ImageFormat.Png);
+                    }
                 }
+
+                return fileName;
             }
+            catch (Exception ex )
+            {
+
+                return ex.Message;
+            }
+
+
+
+        }
