@@ -21,7 +21,7 @@ NugetPackage ->    <PackageReference Include="QRCoderNetCore" Version="1.0.0" />
 
                     using (Bitmap bitmap = qrCode.GetGraphic(60))
                     {
-                         fileName = $"{Code}_QRCode.png"; //  file name is email + qr name
+                         fileName = $"{Code}_QRCode.png";    
                         string filePath = Path.Combine(qrCodePath, fileName);
                         bitmap.Save(filePath, ImageFormat.Png);
                     }
